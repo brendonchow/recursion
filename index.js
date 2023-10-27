@@ -22,34 +22,33 @@ const fibsRecurse = (n, a = [0, 1]) => {
     : fibsRecurse(n - 1, [...a, a[a.length - 1] + a[a.length - 2]]);
 };
 
-const mergeSort = (array) => {
-  if (array.length === 0 || array.length === 1) return array;
+const mergeSort = (arr, left = 0, right = arr.length - 1) => {
+  if (left === right) return [arr[left]];
 
-  const halfIndex = Math.floor(array.length / 2);
-  const firstHalf = mergeSort(array.slice(0, halfIndex));
-  const secondHalf = mergeSort(array.slice(halfIndex));
+  const mid = left + Math.floor((right - left) / 2);
+  const firstHalf = mergeSort(arr, left, mid);
+  const secondHalf = mergeSort(arr, mid + 1, right);
 
-  const sorted = [];
+  const firstHalfLength = firstHalf.length;
+  const secondHalfLength = secondHalf.length;
+  const sorted = new Array(firstHalfLength + secondHalfLength);
   let i = 0;
   let j = 0;
-  while (i < firstHalf.length && j < secondHalf.length) {
+  let k = 0;
+  while (i < firstHalfLength && j < secondHalfLength) {
     if (firstHalf[i] < secondHalf[j]) {
-      sorted.push(firstHalf[i]);
-      i++;
+      sorted[k++] = firstHalf[i++];
     } else {
-      sorted.push(secondHalf[j]);
-      j++;
+      sorted[k++] = secondHalf[j++];
     }
   }
 
-  while (i < firstHalf.length) {
-    sorted.push(firstHalf[i]);
-    i++;
+  while (i < firstHalfLength) {
+    sorted[k++] = firstHalf[i++];
   }
 
-  while (j < secondHalf.length) {
-    sorted.push(secondHalf[j]);
-    j++;  
+  while (j < secondHalfLength) {
+    sorted[k++] = secondHalf[j++];
   }
 
   return sorted;
